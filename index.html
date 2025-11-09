@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senac - Análise de Equivalência Curricular</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen">
+    <!-- Auth Screens -->
+    <div id="auth-container" class="flex flex-col items-center justify-center min-h-screen p-4">
+        <!-- Login Screen -->
+        <div id="login-screen" class="w-full max-w-md bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300">
+            <div class="gradient-bg p-6 text-center">
+                <img src="https://www.senac.br/images/senac_logo_branco.png" alt="Senac Logo" class="h-12 mx-auto mb-4">
+                <h1 class="text-2xl font-bold text-white">Análise de Equivalência Curricular</h1>
+                <p class="text-blue-100 mt-2">Acesse sua conta para continuar</p>
+            </div>
+            
+            <form class="p-6 space-y-6">
+                <div class="relative">
+                    <input type="email" id="login-email" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <label for="login-email" class="floating-label left-3 text-gray-500 pointer-events-none">E-mail institucional</label>
+                </div>
+                
+                <div class="relative">
+                    <input type="password" id="login-password" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <label for="login-password" class="floating-label left-3 text-gray-500 pointer-events-none">Senha</label>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-700">Lembrar-me</label>
+                    </div>
+                    <a href="#" class="text-sm text-blue-600 hover:text-blue-500">Esqueceu sua senha?</a>
+                </div>
+                
+                <button type="button" onclick="showMainScreen()" class="w-full gradient-bg text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 transition duration-300 flex items-center justify-center">
+                    <span>Entrar</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                
+                <div class="text-center text-sm text-gray-600">
+                    Não tem uma conta? 
+                    <button type="button" onclick="showRegisterScreen()" class="text-blue-600 font-medium hover:text-blue-500">Cadastre-se</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Register Screen (hidden by default) -->
+        <div id="register-screen" class="hidden w-full max-w-md bg-white rounded-xl shadow-xl overflow-hidden transition-all duration-300">
+            <div class="gradient-bg p-6 text-center">
+                <img src="https://www.senac.br/images/senac_logo_branco.png" alt="Senac Logo" class="h-12 mx-auto mb-4">
+                <h1 class="text-2xl font-bold text-white">Criar nova conta</h1>
+                <p class="text-blue-100 mt-2">Preencha seus dados para se registrar</p>
+            </div>
+            
+            <form class="p-6 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="relative">
+                        <input type="text" id="register-first-name" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label for="register-first-name" class="floating-label left-3 text-gray-500 pointer-events-none">Nome</label>
+                    </div>
+                    
+                    <div class="relative">
+                        <input type="text" id="register-last-name" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label for="register-last-name" class="floating-label left-3 text-gray-500 pointer-events-none">Sobrenome</label>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <input type="email" id="register-email" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <label for="register-email" class="floating-label left-3 text-gray-500 pointer-events-none">E-mail institucional</label>
+                </div>
+                
+                <div class="relative">
+                    <input type="password" id="register-password" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <label for="register-password" class="floating-label left-3 text-gray-500 pointer-events-none">Senha</label>
+                </div>
+                
+                <div class="relative">
+                    <input type="password" id="register-confirm-password" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <label for="register-confirm-password" class="floating-label left-3 text-gray-500 pointer-events-none">Confirmar senha</label>
+                </div>
+                
+                <div class="flex items-center">
+                    <input id="terms" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="terms" class="ml-2 block text-sm text-gray-700">
+                        Concordo com os <a href="#" class="text-blue-600 hover:text-blue-500">Termos de Serviço</a> e <a href="#" class="text-blue-600 hover:text-blue-500">Política de Privacidade</a>
+                    </label>
+                </div>
+                
+                <button type="button" onclick="showMainScreen()" class="w-full gradient-bg text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 transition duration-300 flex items-center justify-center">
+                    <span>Registrar</span>
+                    <i class="fas fa-user-plus ml-2"></i>
+                </button>
+                
+                <div class="text-center text-sm text-gray-600">
+                    Já tem uma conta? 
+                    <button type="button" onclick="showLoginScreen()" class="text-blue-600 font-medium hover:text-blue-500">Faça login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Main Application Screen (hidden by default) -->
+    <div id="main-screen" class="hidden min-h-screen bg-gray-50">
+        <!-- Sidebar -->
+        <div class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-10">
+            <div class="flex items-center justify-center h-16 px-4 gradient-bg">
+                <img src="https://www.senac.br/images/senac_logo_branco.png" alt="Senac Logo" class="h-10">
+            </div>
+            
+            <div class="p-4">
+                <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg relative group">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+                        <img id="sidebar-avatar" src="" alt="Avatar" class="w-full h-full object-cover hidden">
+                        <i id="sidebar-avatar-placeholder" class="fas fa-user text-blue-600"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-900">Funcionário Senac</p>
+                        <p class="text-xs text-gray-500">Analista de Currículo</p>
+                    </div>
+                    <label for="sidebar-avatar-upload" class="absolute inset-0 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                        <input id="sidebar-avatar-upload" type="file" accept="image/*" class="hidden" onchange="handleSidebarAvatarChange(this)">
+                    </label>
+                </div>
+            </div>
+            
+            <nav class="mt-2 px-2 space-y-1">
+                <a href="#" onclick="showChatSection(); return false;" class="sidebar-item active flex items-center px-3 py-3 text-sm font-medium rounded-lg text-gray-900 dark:text-gray-100">
+                    <i class="fas fa-comments text-blue-600 w-5 mr-3"></i>
+                    <span>Análise por Chat</span>
+                </a>
+                <a href="#" onclick="showDocumentAnalysisSection()" class="sidebar-item flex items-center px-3 py-3 text-sm font-medium rounded-lg text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+                    <i class="fas fa-file-alt text-gray-500 w-5 mr-3"></i>
+                    <span>Análise de Documentos</span>
+                </a>
+                <a href="#" onclick="showHistorySection(); return false;" class="sidebar-item flex items-center px-3 py-3 text-sm font-medium rounded-lg text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+                    <i class="fas fa-history text-gray-500 w-5 mr-3"></i>
+                    <span>Histórico de Chats</span>
+                </a>
+            </nav>
+            
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+                <button onclick="showAuthScreen()" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                    <i class="fas fa-sign-out-alt mr-2 text-gray-500"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="ml-64 flex flex-col min-h-screen">
+            <!-- Header -->
+            <header class="bg-white shadow-sm">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <h1 class="text-xl font-semibold text-gray-900">Análise de Equivalência Curricular</h1>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <button id="user-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+                                    <img id="user-avatar" src="" alt="Avatar" class="w-full h-full object-cover hidden">
+                                    <i id="avatar-placeholder" class="fas fa-user text-blue-600"></i>
+                                </div>
+                                <span class="hidden md:inline-block font-medium">Funcionário</span>
+                                <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
+                            </button>
+                        
+                        <!-- User dropdown menu -->
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="showProfileSettings()">
+                                <i class="fas fa-user-circle mr-2"></i> Meu Perfil
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="showSettings()">
+                                <i class="fas fa-cog mr-2"></i> Configurações
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="showAuthScreen()">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Sair
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content -->
+            <main class="flex-1 p-6 bg-gray-50">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="border-b border-gray-200 px-6 py-4">
+                        <h2 class="text-lg font-medium text-gray-900">Assistente de Análise Curricular</h2>
+                        <p class="text-sm text-gray-500">Converse com nosso assistente ou envie documentos para análise de equivalência</p>
+                    </div>
+                    
+                    <!-- Chat Container -->
+                    <div class="h-96 overflow-y-auto p-4 space-y-4" id="chat-container">
+                        <!-- Welcome message -->
+                        <div class="flex items-start space-x-3">
+                            <div class="flex-shrink-0">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <i class="fas fa-robot text-blue-600"></i>
+                                </div>
+                            </div>
+                            <div class="chat-bubble-bot px-4 py-3 max-w-xs md:max-w-md lg:max-w-lg">
+                                <p class="text-sm">Olá! Sou o assistente de análise curricular do Senac. Posso ajudar você a verificar equivalências entre grades curriculares. Você pode me perguntar diretamente ou enviar documentos (PDF, XML ou JSON) para análise.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- File Upload Area -->
+                    <div id="file-upload-area" class="file-drop-area border-t border-gray-200 p-4 mt-4">
+                        <div class="flex items-center justify-center flex-col p-4 text-center">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-600 mb-1 text-sm">Arraste e solte arquivos para análise</p>
+                            <p class="text-xs text-gray-500 mb-2">Ou</p>
+                            <label for="file-upload" class="cursor-pointer gradient-bg text-white py-1 px-3 rounded-lg font-medium hover:opacity-90 transition duration-300 inline-flex items-center text-sm">
+                                <i class="fas fa-folder-open mr-1"></i>
+                                <span>Selecionar arquivos</span>
+                                <input id="file-upload" type="file" class="hidden" multiple accept=".pdf,.xml,.json">
+                            </label>
+                            <p class="text-xs text-gray-500 mt-2">Formatos: PDF, XML, JSON</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Selected Files Preview -->
+                    <div id="selected-files" class="hidden border-t border-gray-200 p-4">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Arquivos selecionados:</h3>
+                        <div class="space-y-2" id="files-list">
+                            <!-- Files will be listed here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Input -->
+                    <div class="border-t border-gray-200 p-4 bg-gray-50">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex-1 relative">
+                                <input type="text" id="chat-input" placeholder="Digite sua mensagem..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-600">
+                                    <i class="far fa-smile"></i>
+                                </button>
+                            </div>
+                            <button id="send-button" class="gradient-bg text-white p-3 rounded-lg hover:opacity-90 transition duration-300">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Document Analysis Section -->
+                <div id="document-analysis-section" class="hidden mt-6 bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="border-b border-gray-200 px-6 py-4">
+                        <h2 class="text-lg font-medium text-gray-900">Análise de Documentos</h2>
+                        <p class="text-sm text-gray-500">Envie documentos para análise de equivalência curricular</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="file-drop-area border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <i class="fas fa-file-pdf text-4xl text-gray-400 mb-4"></i>
+                                <h3 class="text-lg font-medium text-gray-700 mb-2">Histórico Escolar</h3>
+                                <p class="text-sm text-gray-500 mb-4">Arraste e solte ou clique para selecionar</p>
+                                <label for="student-pdf" class="cursor-pointer gradient-bg text-white py-2 px-4 rounded-lg font-medium hover:opacity-90 transition duration-300 inline-flex items-center">
+                                    <i class="fas fa-folder-open mr-2"></i>
+                                    <span>Selecionar Arquivo</span>
+                                    <input id="student-pdf" type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                </label>
+                                <div id="student-file-info" class="mt-4 hidden">
+                                    <p class="text-sm font-medium text-gray-700">Arquivo selecionado:</p>
+                                    <p id="student-file-name" class="text-sm text-gray-500"></p>
+                                </div>
+                            </div>
+                            <div class="file-drop-area border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <i class="fas fa-file-pdf text-4xl text-gray-400 mb-4"></i>
+                                <h3 class="text-lg font-medium text-gray-700 mb-2">Grade Curricular</h3>
+                                <p class="text-sm text-gray-500 mb-4">Arraste e solte ou clique para selecionar</p>
+                                <label for="curriculum-pdf" class="cursor-pointer gradient-bg text-white py-2 px-4 rounded-lg font-medium hover:opacity-90 transition duration-300 inline-flex items-center">
+                                    <i class="fas fa-folder-open mr-2"></i>
+                                    <span>Selecionar Arquivo</span>
+                                    <input id="curriculum-pdf" type="file" class="hidden" accept=".pdf,.xml,.json">
+                                </label>
+                                <div id="curriculum-file-info" class="mt-4 hidden">
+                                    <p class="text-sm font-medium text-gray-700">Arquivo selecionado:</p>
+                                    <p id="curriculum-file-name" class="text-sm text-gray-500"></p>
+                                </div>
+                            </div>
+                            <div class="file-drop-area border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <i class="fas fa-file-pdf text-4xl text-gray-400 mb-4"></i>
+                                <h3 class="text-lg font-medium text-gray-700 mb-2">Documentos Adicionais</h3>
+                                <p class="text-sm text-gray-500 mb-4">Certificados, declarações, etc.</p>
+                                <label for="optional-pdf" class="cursor-pointer gradient-bg text-white py-2 px-4 rounded-lg font-medium hover:opacity-90 transition duration-300 inline-flex items-center">
+                                    <i class="fas fa-folder-open mr-2"></i>
+                                    <span>Selecionar Arquivo</span>
+                                    <input id="optional-pdf" type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                </label>
+                                <div id="optional-file-info" class="mt-4 hidden">
+                                    <p class="text-sm font-medium text-gray-700">Arquivo selecionado:</p>
+                                    <p id="optional-file-name" class="text-sm text-gray-500"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">Informações Adicionais</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="relative">
+                                    <input type="text" id="student-name" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <label for="student-name" class="floating-label left-3 text-gray-500 pointer-events-none">Nome do Aluno</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" id="student-id" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <label for="student-id" class="floating-label left-3 text-gray-500 pointer-events-none">Matrícula</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" id="current-course" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <label for="current-course" class="floating-label left-3 text-gray-500 pointer-events-none">Curso Atual</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" id="target-course" placeholder=" " class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <label for="target-course" class="floating-label left-3 text-gray-500 pointer-events-none">Curso Destino</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                            <button id="analyze-docs-btn" class="gradient-bg text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 transition duration-300 disabled:opacity-50" disabled>
+                                <i class="fas fa-search mr-2"></i> Analisar Documentos
+                            </button>
+                        </div>
+
+                        <div id="analysis-progress" class="mt-6 hidden">
+                            <div class="relative pt-1">
+                                <div class="flex mb-2 items-center justify-between">
+                                    <div>
+                                        <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
+                                            Análise em andamento
+                                        </span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-xs font-semibold inline-block text-blue-600" id="progress-percentage">0%</span>
+                                    </div>
+                                </div>
+                                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
+                                    <div id="progress-bar" style="width:0%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="analysis-results-container" class="mt-6 hidden">
+                            <div class="border-t border-gray-200 pt-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-medium text-gray-900">Resultado da Análise</h3>
+                                    <button onclick="downloadAnalysisResults()" class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
+                                        <i class="fas fa-download mr-1"></i> Exportar
+                                    </button>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                                            <h4 class="font-medium text-gray-900 mb-2">Disciplinas Equivalentes</h4>
+                                            <p class="text-3xl font-bold text-green-600" id="equivalent-count">0</p>
+                                        </div>
+                                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                                            <h4 class="font-medium text-gray-900 mb-2">Disciplinas Pendentes</h4>
+                                            <p class="text-3xl font-bold text-yellow-600" id="pending-count">0</p>
+                                        </div>
+                                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                                            <h4 class="font-medium text-gray-900 mb-2">Carga Horária</h4>
+                                            <p class="text-3xl font-bold text-blue-600" id="workload-count">0h</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-4">
+                                        <div class="border-b border-gray-200 pb-2">
+                                            <h4 class="font-medium text-gray-900">Disciplinas Equivalentes</h4>
+                                        </div>
+                                        <div id="equivalent-subjects" class="space-y-2">
+                                            <!-- Equivalent subjects will be listed here -->
+                                        </div>
+
+                                        <div class="border-b border-gray-200 pb-2 mt-6">
+                                            <h4 class="font-medium text-gray-900">Disciplinas Pendentes</h4>
+                                        </div>
+                                        <div id="pending-subjects" class="space-y-2">
+                                            <!-- Pending subjects will be listed here -->
+                                        </div>
+
+                                        <div class="border-b border-gray-200 pb-2 mt-6">
+                                            <h4 class="font-medium text-gray-900">Observações</h4>
+                                        </div>
+                                        <div id="analysis-notes" class="text-sm text-gray-700">
+                                            <!-- Analysis notes will be displayed here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Section -->
+                <div id="history-section" class="hidden mt-6 bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="border-b border-gray-200 px-6 py-4">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-lg font-medium text-gray-900">Histórico de Chats</h2>
+                            <button onclick="startNewChat()" class="gradient-bg text-white py-1 px-3 rounded-lg text-sm font-medium hover:opacity-90 transition duration-300">
+                                <i class="fas fa-plus mr-1"></i> Novo Chat
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div id="chat-history-list" class="space-y-2">
+                            <!-- Chat history items will be added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Results Section -->
+                <div id="analysis-results-section" class="mt-6 bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="border-b border-gray-200 px-6 py-4">
+                        <h2 class="text-lg font-medium text-gray-900">Resultados da Análise</h2>
+                        <p class="text-sm text-gray-500">Equivalências encontradas entre as grades curriculares</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-info-circle text-blue-500"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-blue-700">
+                                        Envie documentos ou converse com o assistente para ver os resultados da análise de equivalência curricular.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Results will be displayed here -->
+                        <div id="analysis-results" class="space-y-4">
+                            <!-- Sample result (hidden by default) -->
+                            <div class="hidden result-item p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">Disciplina: Programação Orientada a Objetos</h3>
+                                        <p class="text-sm text-gray-500">Código: POO-202</p>
+                                    </div>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Equivalente</span>
+                                </div>
+                                <div class="mt-2 text-sm text-gray-700">
+                                    <p>Equivalente à disciplina "Desenvolvimento OO" (COD: DEV-301) do currículo anterior.</p>
+                                </div>
+                                <div class="mt-3 pt-3 border-t border-gray-200 flex items-center text-xs text-gray-500">
+                                    <i class="fas fa-calendar-alt mr-1"></i>
+                                    <span>Analisado em: 15/06/2023</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Profile Settings Modal -->
+    <div id="profile-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="border-b border-gray-200 px-6 py-4">
+                <h3 class="text-lg font-medium text-gray-900">Configurações do Perfil</h3>
+            </div>
+            <div class="p-6">
+                <div class="flex flex-col items-center mb-6">
+                    <div class="relative mb-4">
+                        <div class="w-24 h-24 rounded-full bg-gray-200 overflow-hidden mx-auto">
+                            <img id="profile-avatar" src="" alt="Avatar" class="w-full h-full object-cover hidden">
+                            <i id="profile-avatar-placeholder" class="fas fa-user text-gray-400 text-4xl w-full h-full flex items-center justify-center"></i>
+                        </div>
+                        <label for="avatar-upload" class="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-2 cursor-pointer hover:bg-blue-600">
+                            <i class="fas fa-camera"></i>
+                            <input id="avatar-upload" type="file" accept="image/*" class="hidden">
+                        </label>
+                    </div>
+                    <h4 class="text-lg font-medium text-gray-900" id="profile-name">Funcionário Senac</h4>
+                    <p class="text-sm text-gray-500">Analista de Currículo</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                        <input type="text" id="profile-fullname" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                        <input type="email" id="profile-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Alterar Senha</label>
+                        <input type="password" id="profile-new-password" placeholder="Nova senha" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mb-2">
+                        <input type="password" id="profile-confirm-password" placeholder="Confirmar nova senha" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 px-6 py-4 flex justify-end">
+                <button type="button" onclick="hideProfileSettings()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 mr-2">
+                    Cancelar
+                </button>
+                <button type="button" onclick="saveProfileSettings()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="border-b border-gray-200 px-6 py-4">
+                <h3 class="text-lg font-medium text-gray-900">Configurações do Sistema</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Idioma</label>
+                        <select id="language-preference" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="pt">Português</option>
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="block text-sm font-medium text-gray-700">Leitura de Mensagens</label>
+                        <button id="toggle-tts-btn" type="button" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" onclick="toggleTTS()">
+                            <span class="sr-only">Ativar leitura de mensagens</span>
+                            <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 px-6 py-4 flex justify-end">
+                <button type="button" onclick="hideSettings()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 mr-2">
+                    Cancelar
+                </button>
+                <button type="button" onclick="saveSettings()" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    Salvar Configurações
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
