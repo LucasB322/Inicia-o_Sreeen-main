@@ -8,7 +8,7 @@ const ProfileModal = ({ isOpen, onClose, onSave }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [avatar, setAvatar] = useState('')
+  const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
     if (isOpen) {
@@ -25,16 +25,15 @@ const ProfileModal = ({ isOpen, onClose, onSave }) => {
           name: profile.user.name || "",
           email: profile.user.email || "",
         });
-        setAvatar("https://cdn-icons-png.flaticon.com/512/1/1247.png")
+        setAvatar("https://cdn-icons-png.flaticon.com/512/1/1247.png");
       } catch (backendError) {
         console.warn(
           "Erro ao carregar do backend, usando localStorage:",
-          backendError
+          backendError,
         );
         const savedName =
           localStorage.getItem("userName") || "Funcionário Senac";
         const savedEmail = localStorage.getItem("userEmail") || "";
-        const savedAvatar = localStorage.getItem("avatar") || "";
 
         setFormData({
           name: savedName,
@@ -48,19 +47,6 @@ const ProfileModal = ({ isOpen, onClose, onSave }) => {
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleAvatarUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const avatarData = e.target.result;
-        setAvatar(avatarData);
-        localStorage.setItem("avatar", avatarData);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handleSave = async () => {
@@ -160,6 +146,7 @@ const ProfileModal = ({ isOpen, onClose, onSave }) => {
               <input
                 type="email"
                 value={formData.email}
+                disabled="true"
                 onChange={(e) => handleInputChange("email", e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
               />
@@ -171,17 +158,9 @@ const ProfileModal = ({ isOpen, onClose, onSave }) => {
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 mr-2"
+            className="px-4 py-2 text-sm font-medium text-white bg-red-400 rounded-md hover:bg-red-700 mr-2"
           >
-            Cancelar
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={loading}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? "Salvando..." : "Salvar Alterações"}
+            Sair
           </button>
         </div>
       </div>

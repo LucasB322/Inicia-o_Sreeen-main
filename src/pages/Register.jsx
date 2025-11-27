@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { authService } from '../services/api';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { authService } from "../services/api";
 
 const Register = () => {
   const [registerData, setRegisterData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -24,12 +24,12 @@ const Register = () => {
 
     // Validações
     if (registerData.password !== registerData.confirmPassword) {
-      setError('As senhas não coincidem');
+      setError("As senhas não coincidem");
       return;
     }
 
     if (registerData.password.length < 6) {
-      setError('A senha deve ter pelo menos 6 caracteres');
+      setError("A senha deve ter pelo menos 6 caracteres");
       return;
     }
 
@@ -37,20 +37,25 @@ const Register = () => {
 
     try {
       const userData = {
-        name: `${registerData.firstName} ${registerData.lastName}`, 
+        name: `${registerData.firstName} ${registerData.lastName}`,
         email: registerData.email,
         password: registerData.password,
       };
 
       const response = await authService.register(userData);
-      
+
       // Salvar token e dados do usuário
-      localStorage.setItem('authToken', response.token || response.access_token);
-      localStorage.setItem('userData', JSON.stringify(response.user || response));
-      
-      navigate('/main');
+      localStorage.setItem(
+        "authToken",
+        response.token || response.access_token,
+      );
+      localStorage.setItem(
+        "userData",
+        JSON.stringify(response.user || response),
+      );
+      navigate("/main");
     } catch (err) {
-      setError(err.message || 'Erro ao criar conta. Tente novamente.');
+      setError(err.error || "Erro ao criar conta. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -66,7 +71,9 @@ const Register = () => {
             className="h-12 mx-auto mb-4"
           />
           <h1 className="text-2xl font-bold text-white">Criar nova conta</h1>
-          <p className="text-blue-100 mt-2">Preencha seus dados para se registrar</p>
+          <p className="text-blue-100 mt-2">
+            Preencha seus dados para se registrar
+          </p>
         </div>
 
         <form className="p-6 space-y-4" onSubmit={handleRegister}>
@@ -83,7 +90,9 @@ const Register = () => {
                 id="register-first-name"
                 placeholder=" "
                 value={registerData.firstName}
-                onChange={(e) => handleRegisterInputChange('firstName', e.target.value)}
+                onChange={(e) =>
+                  handleRegisterInputChange("firstName", e.target.value)
+                }
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
@@ -101,7 +110,9 @@ const Register = () => {
                 id="register-last-name"
                 placeholder=" "
                 value={registerData.lastName}
-                onChange={(e) => handleRegisterInputChange('lastName', e.target.value)}
+                onChange={(e) =>
+                  handleRegisterInputChange("lastName", e.target.value)
+                }
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
@@ -120,7 +131,9 @@ const Register = () => {
               id="register-email"
               placeholder=" "
               value={registerData.email}
-              onChange={(e) => handleRegisterInputChange('email', e.target.value)}
+              onChange={(e) =>
+                handleRegisterInputChange("email", e.target.value)
+              }
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
@@ -138,7 +151,9 @@ const Register = () => {
               id="register-password"
               placeholder=" "
               value={registerData.password}
-              onChange={(e) => handleRegisterInputChange('password', e.target.value)}
+              onChange={(e) =>
+                handleRegisterInputChange("password", e.target.value)
+              }
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
@@ -156,7 +171,9 @@ const Register = () => {
               id="register-confirm-password"
               placeholder=" "
               value={registerData.confirmPassword}
-              onChange={(e) => handleRegisterInputChange('confirmPassword', e.target.value)}
+              onChange={(e) =>
+                handleRegisterInputChange("confirmPassword", e.target.value)
+              }
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
@@ -176,23 +193,23 @@ const Register = () => {
               required
             />
             <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-              Concordo com os{' '}
+              Concordo com os{" "}
               <button
                 type="button"
                 onClick={() => {
                   // Implementar modal ou página de termos
-                  console.log('Ver termos de serviço');
+                  console.log("Ver termos de serviço");
                 }}
                 className="text-blue-600 hover:text-blue-500 bg-transparent border-none cursor-pointer p-0 underline"
               >
                 Termos de Serviço
-              </button>{' '}
-              e{' '}
+              </button>{" "}
+              e{" "}
               <button
                 type="button"
                 onClick={() => {
                   // Implementar modal ou página de política
-                  console.log('Ver política de privacidade');
+                  console.log("Ver política de privacidade");
                 }}
                 className="text-blue-600 hover:text-blue-500 bg-transparent border-none cursor-pointer p-0 underline"
               >
@@ -220,8 +237,11 @@ const Register = () => {
           </button>
 
           <div className="text-center text-sm text-gray-600">
-            Já tem uma conta?{' '}
-            <Link to="/login" className="text-blue-600 font-medium hover:text-blue-500">
+            Já tem uma conta?{" "}
+            <Link
+              to="/login"
+              className="text-blue-600 font-medium hover:text-blue-500"
+            >
               Faça login
             </Link>
           </div>
@@ -232,4 +252,3 @@ const Register = () => {
 };
 
 export default Register;
-

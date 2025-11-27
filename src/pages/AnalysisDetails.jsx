@@ -57,14 +57,16 @@ const AnalysisDetails = () => {
 
   const { headers, rows } = parseCSV(a.rawContent);
 
-  // Remove bug das linhas "```csv" e "```"
-  const cleanPending = a.pendingSubjects.filter(
-    (p) => !p.name.includes("```")
-  );
+  // NOVO: extraindo disciplinas não equivalentes diretamente do CSV
+  const pendingFromCsv = rows
+    .filter((row) => row[1]?.trim().toLowerCase() !== "equivalente")
+    .map((row) => ({
+      name: row[0] || "Desconhecido",
+      workload: row[3]?.replace("h", "") || "0",
+    }));
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
-
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Detalhes da Análise</h1>
@@ -78,7 +80,6 @@ const AnalysisDetails = () => {
 
       {/* Cards Resumo */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
         <div className="bg-white shadow p-5 rounded-lg">
           <p className="text-sm text-gray-600">Equivalentes</p>
           <h2 className="text-3xl font-semibold text-green-700">
@@ -89,7 +90,7 @@ const AnalysisDetails = () => {
         <div className="bg-white shadow p-5 rounded-lg">
           <p className="text-sm text-gray-600">Pendentes</p>
           <h2 className="text-3xl font-semibold text-yellow-600">
-            {a.pendingCount}
+            {pendingFromCsv.length}
           </h2>
         </div>
 
@@ -99,17 +100,24 @@ const AnalysisDetails = () => {
             {a.workloadCount}h
           </h2>
         </div>
-
       </div>
 
       {/* Informações do Aluno */}
       <div className="bg-white shadow p-6 rounded-lg space-y-3">
         <h2 className="text-lg font-semibold">Dados do Aluno</h2>
         <div className="grid grid-cols-2 gap-4 text-sm">
-          <p><strong>Nome:</strong> {analysis.studentName}</p>
-          <p><strong>Matrícula:</strong> {analysis.registration}</p>
-          <p><strong>Curso Atual:</strong> {analysis.studentActualCourse}</p>
-          <p><strong>Curso Para:</strong> {analysis.studentTargetCourse}</p>
+          <p>
+            <strong>Nome:</strong> {analysis.studentName}
+          </p>
+          <p>
+            <strong>Matrícula:</strong> {analysis.registration}
+          </p>
+          <p>
+            <strong>Curso Atual:</strong> {analysis.studentActualCourse}
+          </p>
+          <p>
+            <strong>Curso Para:</strong> {analysis.studentTargetCourse}
+          </p>
         </div>
       </div>
 
@@ -117,33 +125,43 @@ const AnalysisDetails = () => {
       <div className="bg-white shadow p-6 rounded-lg space-y-3">
         <h2 className="text-lg font-semibold">Gerada por</h2>
 
-        <p><strong>Nome:</strong> {analysis.generator.name}</p>
-        <p><strong>Email:</strong> {analysis.generator.email}</p>
-        <p><strong>Criada em:</strong> {formatDate(analysis.createdAt)}</p>
-        <p><strong>Atualizada em:</strong> {formatDate(analysis.updatedAt)}</p>
+        <p>
+          <strong>Nome:</strong> {analysis.generator.name}
+        </p>
+        <p>
+          <strong>Email:</strong> {analysis.generator.email}
+        </p>
+        <p>
+          <strong>Criada em:</strong> {formatDate(analysis.createdAt)}
+        </p>
+        <p>
+          <strong>Atualizada em:</strong> {formatDate(analysis.updatedAt)}
+        </p>
       </div>
 
-      {/* Equivalentes */}
+      {/* Conteúdo Original */}
       <div className="bg-white shadow p-6 rounded-lg">
-        <h2 className="text-lg font-semibold mb-3">Disciplinas Equivalentes</h2>
+        <h2 className="text-lg font-semibold mb-3">Conteúdo (CSV)</h2>
 
         <div className="overflow-auto max-h-96 border rounded">
           <table className="min-w-full text-sm border-collapse">
-            <thead className="bg-green-100 text-green-900">
+            <thead className="bg-gray-100 text-gray-700">
               <tr>
-                <th className="px-4 py-2 border">Disciplina</th>
-                <th className="px-4 py-2 border">Carga</th>
-                <th className="px-4 py-2 border">Equivalente a</th>
+                {headers.map((h, i) => (
+                  <th key={i} className="px-4 py-2 border">
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {a.equivalentSubjects.map((sub, idx) => (
-                <tr key={idx} className="hover:bg-green-50">
-                  <td className="px-4 py-2 border">{sub.name}</td>
-                  <td className="px-4 py-2 border">{sub.workload}h</td>
-                  <td className="px-4 py-2 border">
-                    {sub.equivalentTo || "-"}
-                  </td>
+              {rows.map((row, idx) => (
+                <tr key={idx} className="hover:bg-gray-50">
+                  {row.map((cell, i) => (
+                    <td key={i} className="px-4 py-2 border">
+                      {cell || "-"}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
@@ -164,7 +182,7 @@ const AnalysisDetails = () => {
               </tr>
             </thead>
             <tbody>
-              {cleanPending.map((sub, idx) => (
+              {pendingFromCsv.map((sub, idx) => (
                 <tr key={idx} className="hover:bg-yellow-50">
                   <td className="px-4 py-2 border">{sub.name}</td>
                   <td className="px-4 py-2 border">{sub.workload}h</td>
@@ -174,35 +192,6 @@ const AnalysisDetails = () => {
           </table>
         </div>
       </div>
-
-      {/* Conteúdo Original */}
-      <div className="bg-white shadow p-6 rounded-lg">
-        <h2 className="text-lg font-semibold mb-3">Conteúdo Original (CSV)</h2>
-
-        <div className="overflow-auto max-h-96 border rounded">
-          <table className="min-w-full text-sm border-collapse">
-            <thead className="bg-gray-100 text-gray-700">
-              <tr>
-                {headers.map((h, i) => (
-                  <th key={i} className="px-4 py-2 border">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, idx) => (
-                <tr key={idx} className="hover:bg-gray-50">
-                  {row.map((cell, i) => (
-                    <td key={i} className="px-4 py-2 border">
-                      {cell || "-"}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
     </div>
   );
 };

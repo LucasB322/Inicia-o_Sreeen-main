@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import apiServices from '../services/api';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import apiServices from "../services/api";
+import SuccessModal from "./SuccessModal";
 
 const History = () => {
   const [analyses, setAnalyses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [successModal, setSuccessModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadAnalyses = async () => {
       try {
-        const savedAnalyses = await apiServices.analysisService.getAnalysisHistory();
+        const savedAnalyses =
+          await apiServices.analysisService.getAnalysisHistory();
         setAnalyses(savedAnalyses.reports);
       } catch (error) {
         console.error("Erro ao carregar histórico:", error);
@@ -22,8 +25,19 @@ const History = () => {
     loadAnalyses();
   }, []);
 
+  useEffect(() => {
+    if (successModal) {
+      const timer = setTimeout(() => {
+        setSuccessModal(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [successModal]);
+
   const handleNewAnalysis = () => {
-    const savedAnalyses = JSON.parse(localStorage.getItem('analysesHistory')) || [];
+    const savedAnalyses =
+      JSON.parse(localStorage.getItem("analysesHistory")) || [];
     setAnalyses(savedAnalyses);
   };
 
@@ -33,6 +47,7 @@ const History = () => {
 
     try {
       await apiServices.analysisService.deleteAnalysis(id);
+      setSuccessModal(true);
 
       // Remover da lista sem reload
       setAnalyses((prev) => prev.filter((analysis) => analysis.id !== id));
@@ -44,13 +59,13 @@ const History = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
+    return date.toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
     });
   };
 
@@ -58,7 +73,9 @@ const History = () => {
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="border-b border-gray-200 px-6 py-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-lg font-medium text-gray-900">Histórico de Análises</h2>
+          <h2 className="text-lg font-medium text-gray-900">
+            Histórico de Análises
+          </h2>
           <button
             onClick={handleNewAnalysis}
             className="gradient-bg text-white py-1 px-3 rounded-lg text-sm font-medium hover:opacity-90 transition duration-300"
@@ -78,8 +95,8 @@ const History = () => {
         )}
 
         {/* 🔥 Conteúdo quando NÃO está carregando */}
-        {!loading && (
-          analyses.length === 0 ? (
+        {!loading &&
+          (analyses.length === 0 ? (
             <div className="text-center py-12">
               <i className="fas fa-history text-4xl text-gray-300 mb-4"></i>
               <p className="text-gray-500">Nenhuma análise realizada ainda</p>
@@ -108,7 +125,7 @@ const History = () => {
                       <p className="text-xs text-gray-500">
                         {analysis.currentCourse && analysis.targetCourse
                           ? `${analysis.currentCourse} → ${analysis.targetCourse}`
-                          : 'Análise de Equivalência Curricular'}
+                          : "Análise de Equivalência Curricular"}
                       </p>
 
                       <p className="text-xs text-gray-400 mt-1">
@@ -131,9 +148,13 @@ const History = () => {
                 </div>
               ))}
             </div>
-          )
-        )}
+          ))}
       </div>
+      <SuccessModal
+        open={successModal}
+        message="Análise deletada com sucesso!"
+        onClose={() => setSuccessModal(false)}
+      />
     </div>
   );
 };

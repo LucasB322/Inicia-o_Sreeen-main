@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export default function PublicRoute({ children }) {
-  const { isAuthenticated } = useAuth();
+  const { authToken } = useAuth();
 
-  return !isAuthenticated ? children : <Navigate to="/main" replace />;
+  return !authToken ? children : <Navigate to="/main" replace />;
 }

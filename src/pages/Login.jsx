@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { authService } from '../services/api';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { authService } from "../services/api";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,15 +17,20 @@ const Login = () => {
 
     try {
       const response = await authService.login(email, password);
-      
-      // Salvar token e dados do usuário
-      localStorage.setItem('authToken', response.token || response.access_token);
-      localStorage.setItem('userData', JSON.stringify(response.user || response));
-      localStorage.setItem('isAuthenticated', 'true')
 
-      navigate('/main');
+      // Salvar token e dados do usuário
+      localStorage.setItem(
+        "authToken",
+        response.token || response.access_token,
+      );
+      localStorage.setItem(
+        "userData",
+        JSON.stringify(response.user || response),
+      );
+
+      navigate("/main");
     } catch (err) {
-      setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
+      setError(err.error || "Erro ao fazer login. Verifique suas credenciais.");
     } finally {
       setLoading(false);
     }
@@ -92,7 +97,10 @@ const Login = () => {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+              <label
+                htmlFor="remember-me"
+                className="ml-2 block text-sm text-gray-700"
+              >
                 Lembrar-me
               </label>
             </div>
@@ -100,7 +108,7 @@ const Login = () => {
               type="button"
               onClick={() => {
                 // Implementar funcionalidade de recuperação de senha
-                console.log('Recuperar senha');
+                console.log("Recuperar senha");
               }}
               className="text-sm text-blue-600 hover:text-blue-500 bg-transparent border-none cursor-pointer p-0"
             >
@@ -133,8 +141,11 @@ const Login = () => {
           </button>
 
           <div className="text-center text-sm text-gray-600">
-            Não tem uma conta?{' '}
-            <Link to="/register" className="text-blue-600 font-medium hover:text-blue-500">
+            Não tem uma conta?{" "}
+            <Link
+              to="/register"
+              className="text-blue-600 font-medium hover:text-blue-500"
+            >
               Cadastre-se
             </Link>
           </div>
