@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8fafc;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+}
+
+.file-drop-area {
+  border: 2px dashed #cbd5e1;
+  transition: all 0.3s ease;
+}
+
+.file-drop-area.active {
+  border-color: #3b82f6;
+  background-color: #f0f7ff;
+}
+
+.sidebar-item:hover {
+  background-color: #f1f5f9;
+}
+
+.sidebar-item.active {
+  background-color: #e0f2fe;
+  border-left: 4px solid #3b82f6;
+}
+
+@layer components {
+  .gradient-bg {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  }
+
+  .file-drop-area {
+    border: 2px dashed #cbd5e1;
+    transition: all 0.3s ease;
+  }
+
+  .file-drop-area.active {
+    border-color: #3b82f6;
+    background-color: #f0f7ff;
+  }
+
+  .sidebar-item:hover {
+    background-color: #f1f5f9;
+  }
+
+  .sidebar-item.active {
+    background-color: #e0f2fe;
+    border-left: 4px solid #3b82f6;
+  }
+
+  .floating-label {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    transition: all 0.2s ease;
+    pointer-events: none;
+  }
+
+  input:focus + .floating-label,
+  input:not(:placeholder-shown) + .floating-label {
+    transform: translateY(-120%) scale(0.9);
+    background-color: white;
+    padding: 0 4px;
+  }
+}
+
